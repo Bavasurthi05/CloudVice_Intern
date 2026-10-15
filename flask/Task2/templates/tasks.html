@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Tasks</h1>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>      
+        <p>Welcome, {{ username }}!</p>
+        <form id="taskform">
+            <label for="task">Add a new task:</label>
+            <input type="text" id="task" name="task" required>
+            <button type="submit">Add Task</button>
+        </form>
+        <p id="error-message" style="color: red;"></p>
+        <h2>Your Tasks:</h2>        
+        <ul id="task-list">
+            {% for task in tasks %}
+                <li>{{ task['title']}} - {{ task['status'] }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        document.getElementById('taskform').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const taskInput = document.getElementById('task');
+            const task = taskInput.value.trim();
+            if (task) {
+                fetch('/add_task', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ task: task })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const taskList = document.getElementById('task-list');
+                        const newTaskItem = document.createElement('li');
+                        newTaskItem.textContent = task;
+                        taskList.appendChild(newTaskItem);
+                        taskInput.value = '';
+                        document.getElementById('error-message').textContent = '';
+                    } else {
+                        document.getElementById('error-message').textContent = data.error;
+                    }
+                });
+            } else {
+                document.getElementById('error-message').textContent = 'Task cannot be empty.';
+            }
+        });
+    </script>
+</body>
+</html>

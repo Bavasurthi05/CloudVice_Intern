@@ -1,0 +1,17 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+</head>
+<body>
+    <h1>Welcome, {{ name }}!</h1>
+    <h2>Your age is {{ age }}</h2>
+
+    <form action="/add" method="POST">
+        <label>Enter your name:</label>
+        <input type="text" name="name" required>
+        <button type="submit">Add User</button>
+    </form>
+</body>
+</html>
