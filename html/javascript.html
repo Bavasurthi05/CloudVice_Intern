@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="buttonclick">Click here</button>
+    <p> This is a paragraph</p>
+    <script>
+        function clickvalue(){
+            console.log("button is clicked")
+        }
+        // document.getElementById("buttonclick").addEventListener("click",clickvalue)
+        // let value="Hello, World";
+        // console.log(value)
+
+        document.getElementById("buttonclick").addEventListener("click",()=>{
+            const p=document.querySelector('p')
+            console.log(p)
+            console.log(p.textContent)
+        }
+    )
+        function myfunc(){
+            console.log("This is function")
+        }
+        myfunc()
+        const arrowFunction =()=>{
+            console.log("Arrow function")
+        }
+        arrowFunction()
+
+        function calloffunction(myfunc){
+            console.log("This is call value function")
+            myfunc()
+        }
+        calloffunction(myfunc)
+    </script>
+    <form id="myForm">
+        <input type="text" id="username" placeholder="Enter your name">
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            console.log("Form submitted!");
+            console.log(document.getElementById("username").value);
+        });
+    </script>
+</body>
+</html>
