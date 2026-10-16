@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Dashboard</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        header h2 {
+            margin: 0;
+        }
+
+        .logout {
+            background: #dc2626;
+            color: white;
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
+
+        .welcome {
+            margin-bottom: 22px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #1d4ed8;
+        }
+
+        .detail {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            overflow-wrap: anywhere;
+        }
+
+        button, select {
+            width: 100%;
+            padding: 11px;
+            margin-top: 12px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #clock {
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        #toast {
+            display: none;
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #166534;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            max-width: calc(100% - 40px);
+        }
+
+        #toast.error {
+            background: #b91c1c;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>Student Dashboard</h2>
+        <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+    </header>
+
+    <main>
+        <div class="welcome">
+            <h2>Welcome, {{ student["name"] }}!</h2>
+            <p>Manage your student profile and course details.</p>
+        </div>
+
+        <div class="grid">
+            <!-- Student details card -->
+            <section class="card">
+                <h3>My Profile</h3>
+
+                <div id="details">
+                    <div class="detail">
+                        <strong>Name:</strong> {{ student["name"] }}
+                    </div>
+                    <div class="detail">
+                        <strong>Email:</strong> {{ student["email"] }}
+                    </div>
+                    <div class="detail">
+                        <strong>Age:</strong> {{ student["age"] }}
+                    </div>
+                    <div class="detail">
+                        <strong>Gender:</strong> {{ student["gender"] }}
+                    </div>
+                    <div class="detail">
+                        <strong>Course:</strong>
+                        <span id="current-course">{{ student["course"] }}</span>
+                    </div>
+                </div>
+
+                <button type="button" id="toggle-details">
+                    Show/Hide Details
+                </button>
+            </section>
+
+            
+            <section class="card">
+                <h3>Live Clock</h3>
+                <p>Current date and time:</p>
+                <div id="clock">{{ current_time }}</div>
+                <p>The time updates every second.</p>
+            </section>
+
+            
+            <section class="card">
+                <h3>Update My Course</h3>
+                <p>Select your new course below.</p>
+
+                <form id="course-form">
+                    <label for="course">Course</label>
+                    <select id="course" name="course" required>
+                        {% for course in courses %}
+                            <option value="{{ course }}"
+                                {% if course == student["course"] %}selected{% endif %}>
+                                {{ course }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit">Update Course</button>
+                </form>
+
+                <p id="update-status" aria-live="polite"></p>
+            </section>
+        </div>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById("clock").textContent =
+                now.toLocaleString();
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+
+
+        $("#toggle-details").on("click", function () {
+            $("#details").toggle();
+        });
+
+
+        $("#course-form").on("submit", function (event) {
+            event.preventDefault();
+
+            const selectedCourse = $("#course").val();
+
+            $.post({
+                url: "{{ url_for('update_course') }}",
+                contentType: "application/json",
+                data: JSON.stringify({ course: selectedCourse })
+            })
+            .done(function (response) {
+                $("#current-course").text(response.course);
+                $("#update-status").text(response.message);
+                showToast(response.message, false);
+            })
+            .fail(function (xhr) {
+                const message =
+                    xhr.responseJSON?.message || "Course update failed.";
+                $("#update-status").text(message);
+                showToast(message, true);
+            });
+        });
+
+        function showToast(message, isError) {
+            $("#toast")
+                .stop(true, true)
+                .removeClass("error")
+                .text(message);
+
+            if (isError) {
+                $("#toast").addClass("error");
+            }
+
+            $("#toast").fadeIn(200).delay(2500).fadeOut(400);
+        }
+    </script>
+</body>
+</html>

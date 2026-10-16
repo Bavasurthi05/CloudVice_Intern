@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #dbeafe, #ede9fe);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .success-card {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            padding: 40px 30px;
+            text-align: center;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-icon {
+            width: 85px;
+            height: 85px;
+            background: #dcfce7;
+            color: #16a34a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            color: #166534;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        h2 {
+            color: #3730a3;
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            display: block;
+            padding: 13px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #3730a3;
+        }
+
+        .secondary {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .footer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="success-card">
+
+        <div class="success-icon">&#10003;</div>
+
+        <h1>Registration Successful!</h1>
+
+        <h2>Welcome, {{ name }}!</h2>
+
+        <p>
+            Your registration has been completed successfully.
+            We're happy to have you here!
+        </p>
+
+        <div class="buttons">
+            <a href="/" class="btn primary">
+                Register Another Student
+            </a>
+
+            <a href="/login" class="btn secondary">
+                Go to Login
+            </a>
+        </div>
+
+        <div class="footer">
+            Thank you for registering with us.
+        </div>
+
+    </div>
+</body>
+</html>

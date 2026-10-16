@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 30px;
+        }
+        .container {
+            max-width: 450px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+        p { padding: 8px 0; }
+        a {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Profile</h2>
+
+        <p><strong>Name:</strong> {{ student["name"] }}</p>
+        <p><strong>Email:</strong> {{ student["email"] }}</p>
+        <p><strong>Age:</strong> {{ student["age"] }}</p>
+        <p><strong>Course:</strong> {{ student["course"] }}</p>
+
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+</html>

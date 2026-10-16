@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Student Registration Form</h2>
+
+        <form id="registrationForm">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" placeholder="Enter your full name">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+
+            <label for="age">Age</label>
+            <input type="number" id="age" placeholder="Enter your age">
+
+            <label for="gender">Gender</label>
+            <select id="gender">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="course">Course</label>
+            <select id="course">
+                <option value="">Select Course</option>
+                <option value="B.Tech IT">B.Tech IT</option>
+                <option value="B.Tech CSE">B.Tech CSE</option>
+                <option value="B.Sc Computer Science">B.Sc Computer Science</option>
+                <option value="BCA">BCA</option>
+                <option value="MCA">MCA</option>
+            </select>
+
+            <label for="password">Password</label>
+            <input type="password" id="password"
+                   placeholder="Enter password (minimum 6 characters)">
+
+            <button type="submit">Register</button>
+
+            <p id="message" role="status"></p>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+</html>
